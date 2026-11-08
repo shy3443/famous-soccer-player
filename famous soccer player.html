@@ -7,34 +7,126 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
 
+        /* ✨ 1. 무빙 그라데이션 기본 배경 ✨ */
         body { 
             font-family: 'Pretendard', sans-serif; 
             margin: 0; 
             padding: 40px 20px;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            color: #333; 
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #0c4a6e, #1e1b4b);
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite alternate; 
+            color: #1e293b; 
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             box-sizing: border-box;
+            position: relative; 
+            overflow-x: hidden; 
+            z-index: 0;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+            background-size: 35px 35px; 
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            pointer-events: none; 
+            overflow: hidden;
+        }
+
+        /* ✨ 2. 몽환적으로 움직이는 빛 무리(오로라/스포트라이트) 효과 추가 ✨ */
+        .glowing-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: moveOrb 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+        
+        .orb-1 {
+            width: 50vw; height: 50vw;
+            background: #38bdf8;
+            top: -10%; left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 40vw; height: 40vw;
+            background: #818cf8;
+            bottom: -10%; right: -5%;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 35vw; height: 35vw;
+            background: #34d399;
+            top: 30%; left: 40%;
+            animation-duration: 30s;
+            animation-delay: -10s;
+            opacity: 0.4;
+        }
+
+        @keyframes moveOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10vw, 15vh) scale(1.2); }
+            100% { transform: translate(-10vw, -10vh) scale(0.9); }
+        }
+
+        /* ✨ 3. 로고 애니메이션 ✨ */
+        .bg-logo {
+            position: absolute;
+            object-fit: contain;
+            opacity: 0.25; 
+            filter: grayscale(10%) brightness(140%) drop-shadow(0 4px 6px rgba(0,0,0,0.3)); 
+            animation: floatAndRotate infinite ease-in-out alternate;
+        }
+
+        @keyframes floatAndRotate {
+            0% { transform: translateY(0px) rotate(-3deg) scale(1); }
+            100% { transform: translateY(-20px) rotate(6deg) scale(1.06); }
         }
 
         .card {
             background: #ffffff;
             width: 100%;
-            max-width: 560px;
+            max-width: 540px;
             border-radius: 24px;
             padding: 40px 35px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             text-align: center;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10; 
         }
 
         .logo { 
-            font-size: 28px; 
+            font-size: 30px; 
             font-weight: 900; 
-            color: #1e3a8a; 
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0 0 10px 0; 
             letter-spacing: -0.5px;
         }
@@ -43,6 +135,7 @@
             color: #64748b;
             font-size: 16px;
             margin-bottom: 25px;
+            font-weight: 600;
         }
 
         .controls {
@@ -53,17 +146,21 @@
         }
         
         button, label.upload-btn { 
-            background: #2563eb; 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
             color: #fff; 
             border: none; 
             padding: 16px; 
-            border-radius: 12px; 
+            border-radius: 14px; 
             cursor: pointer; 
             font-size: 18px; 
             font-weight: 800; 
-            transition: all 0.2s ease; 
+            transition: all 0.3s ease; 
         }
-        button:hover, label.upload-btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+        button:hover, label.upload-btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
+        }
         input[type="file"] { display: none; }
         
         #loading { 
@@ -76,16 +173,16 @@
             border-radius: 10px; 
         }
 
-        /* 크고 선명한 이미지 뷰어 */
         #image-wrapper {
             width: 100%;
             max-height: 550px;
-            border-radius: 16px;
+            border-radius: 18px;
             overflow: hidden;
             margin: 0 auto 30px auto;
             display: none;
             background: #f8fafc;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 2px solid #eff6ff;
         }
 
         #image-preview {
@@ -94,9 +191,12 @@
             max-height: 550px;
             object-fit: contain; 
             display: block;
+            transition: transform 0.4s ease; 
+        }
+        #image-wrapper:hover #image-preview {
+            transform: scale(1.03); 
         }
 
-        /* 결과 정보창 */
         .info-panel {
             background: #f8fafc;
             border-radius: 20px;
@@ -112,11 +212,10 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* AI 일치도 프로그레스 바 */
         .match-rate-box {
             background: #ffffff;
             border: 2px solid #eff6ff;
@@ -138,7 +237,6 @@
         .progress-bg { width: 100%; height: 16px; background: #e2e8f0; border-radius: 8px; overflow: hidden; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #10b981); width: 0%; border-radius: 8px; transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-        /* 정보 항목들 */
         .info-item {
             display: flex;
             align-items: center;
@@ -146,7 +244,6 @@
         }
         .info-item:last-child { margin-bottom: 0; }
         
-        /* 엠블럼 이미지 크기 */
         .info-emblem { 
             width: 50px; 
             height: 50px; 
@@ -156,6 +253,7 @@
             background: #ffffff;
             padding: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            border: 1px solid #f1f5f9;
         }
         
         .info-text { display: flex; flex-direction: column; }
@@ -168,6 +266,13 @@
     </style>
 </head>
 <body>
+
+<div class="bg-decoration" id="bgDecoration">
+    <!-- 빛 무리 효과 요소들 -->
+    <div class="glowing-orb orb-1"></div>
+    <div class="glowing-orb orb-2"></div>
+    <div class="glowing-orb orb-3"></div>
+</div>
 
 <div class="card">
     <h1 class="logo">⚽ 유명축구선수 이미지 분류</h1>
@@ -183,7 +288,6 @@
         </div>
     </div>
 
-    <!-- 화질 저하 없는 액자형 뷰어 -->
     <div id="image-wrapper">
         <img id="image-preview" src="#" alt="선수 사진" />
     </div>
@@ -209,7 +313,6 @@
         </div>
         
         <div class="info-item">
-            <!-- 에러 발생 시 기본 아이콘으로 대체하는 안전장치 유지 -->
             <img class="info-emblem" id="res-nation-img" src="" alt="국적 엠블럼" onerror="this.src='https://cdn-icons-png.flaticon.com/512/861/861512.png'">
             <div class="info-text">
                 <span class="info-label">국적</span>
@@ -295,8 +398,7 @@
         "메이슨 마운트": { nation: "잉글랜드", club: "맨체스터 유나이티드", role: "미드필더 (MF)", awards: "챔스 우승" },
         "모이세스 카이세도": { nation: "에콰도르", club: "첼시", role: "미드필더 (MF)", awards: "첼시 레코드 이적료" },
         "페드리": { nation: "스페인", club: "바르셀로나", role: "미드필더 (MF)", awards: "골든보이, 코파 트로피" },
-        "로드리": { nation: "스페인", club: "바르셀로나", role: "미드필더 (MF)", awards: "챔스 결승골, 트레블" },
-        
+        "로드리": { nation: "스페인", club: "바르셀로나", role: "미드필더 (MF)", awards: "챔스 결승골, 트레블" }
     };
 
     const nationFlags = {
@@ -317,7 +419,6 @@
         "스페인": "https://flagcdn.com/w80/es.png"
     };
 
-    // 깨짐 현상이 없는 스포츠 데이터베이스(Fotmob) 및 안정적인 CDN을 혼합하여 나폴리 오류 완벽 수정
     const clubLogos = {
         "레알 마드리드": "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png",
         "레알마드리드": "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png",
@@ -334,7 +435,6 @@
         "AC밀란": "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png",
         "알 나스르": "https://images.fotmob.com/image_resources/logo/teamlogo/102031.png",
         "알 힐랄": "https://images.fotmob.com/image_resources/logo/teamlogo/102029.png",
-        "알 이티하드": "https://images.fotmob.com/image_resources/logo/teamlogo/102030.png",
         "인터 마이애미": "https://images.fotmob.com/image_resources/logo/teamlogo/1017551.png",
         "브라이튼": "https://images.fotmob.com/image_resources/logo/teamlogo/8659.png",
         "사우샘프턴": "https://images.fotmob.com/image_resources/logo/teamlogo/8466.png",
@@ -346,12 +446,79 @@
         "릴": "https://images.fotmob.com/image_resources/logo/teamlogo/8639.png",
         "시카고 파이어": "https://images.fotmob.com/image_resources/logo/teamlogo/8248.png",
         "갈라타사라이": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
-        
-        // 나폴리 엠블럼을 정확한 위키미디어 썸네일 경로로 수정했습니다.
         "나폴리": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/SSC_Napoli_Logo_2023.svg/150px-SSC_Napoli_Logo_2023.svg.png",
-        
         "은퇴": "https://cdn-icons-png.flaticon.com/512/3048/3048122.png"
     };
+
+    const backgroundSafeLogos = [
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8634.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8306.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8564.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/9847.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/9885.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/8636.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png", 
+        "https://images.fotmob.com/image_resources/logo/teamlogo/102031.png" 
+    ];
+
+    // ✨ 중앙을 비우지 않고 전체 영역을 꽉 채우는 방식으로 변경! ✨
+    // 중앙에 생성되는 로고는 불투명한 하얀색 카드 뒤로 자연스럽게 숨겨집니다.
+    function createBackgroundLogos() {
+        const bgContainer = document.getElementById('bgDecoration');
+        
+        // 빛 무리 효과가 지워지지 않도록 로고만 추가
+        const orbs = bgContainer.innerHTML; 
+        bgContainer.innerHTML = orbs;
+
+        const cols = 9;  // 촘촘하게 9칸
+        const rows = 6;  // 세로로 6칸
+        const cellWidth = 100 / cols;
+        const cellHeight = 100 / rows;
+
+        let logoIndex = 0;
+
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                
+                // ❌ 이전처럼 화면 가운데를 강제로 비우는 코드를 삭제했습니다.
+                // 하얀색 메인 카드가 중앙의 로고들을 가려주므로, 테두리가 완벽하게 채워집니다.
+
+                let img = document.createElement('img');
+                img.src = backgroundSafeLogos[logoIndex % backgroundSafeLogos.length];
+                logoIndex++;
+                img.className = 'bg-logo';
+
+                img.onerror = function() {
+                    this.style.display = 'none';
+                };
+
+                let randomX = (c * cellWidth) + (1 + Math.random() * (cellWidth - 10));
+                let randomY = (r * cellHeight) + (1 + Math.random() * (cellHeight - 10));
+
+                img.style.left = randomX + '%';
+                img.style.top = randomY + '%';
+
+                img.style.animationDelay = (Math.random() * 5) + 's';
+                img.style.animationDuration = (5 + Math.random() * 5) + 's';
+
+                let size = 70 + Math.random() * 35; // 크고 시원시원한 로고 사이즈 유지
+                img.style.width = size + 'px';
+                img.style.height = size + 'px';
+
+                bgContainer.appendChild(img);
+            }
+        }
+    }
+
+    window.onload = createBackgroundLogos;
 
     async function init() {
         const loadingDiv = document.getElementById("loading");
